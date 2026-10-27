@@ -95,25 +95,31 @@
         
         .option-card {
             background: #ffffff; border: 1px solid var(--border); border-radius: 16px;
-            padding: 16px; margin-bottom: 12px; position: relative;
+            padding: 16px; margin-bottom: 16px; position: relative;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         .option-header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
         }
-        .option-label { font-size: 16px; font-weight: 800; color: var(--text); }
+        .option-label { font-size: 15px; font-weight: 800; color: var(--text); }
         .style-badge {
-            font-size: 12px; font-weight: 700; color: #ffffff;
-            background: var(--primary); padding: 4px 12px; border-radius: 9999px;
+            font-size: 11px; font-weight: 700; color: #ffffff;
+            background: var(--primary); padding: 4px 10px; border-radius: 9999px;
+        }
+        .style-badge.alt {
+            background: var(--accent);
         }
         .option-text {
             font-size: 15px; line-height: 1.5; color: var(--text);
-            white-space: pre-wrap; margin-bottom: 14px; word-break: break-word;
+            white-space: pre-wrap; margin-bottom: 12px; word-break: break-word;
             background: #f7f9f9; padding: 14px; border-radius: 12px; border: 1px solid #eff3f4;
         }
         .btn-copy { background-color: var(--accent); color: white; width: 100%; padding: 12px; font-size: 14px; font-weight: 700; }
         .btn-copy:hover { background-color: #1a8cd8; }
         .btn-copy.copied { background-color: var(--success); }
+        .action-row { display: flex; gap: 8px; }
+        .btn-shuffle { background-color: #eff3f4; color: var(--text); flex: 0 0 auto; padding: 12px 16px; }
+        .btn-shuffle:hover { background-color: #d7dbdc; }
     </style>
 </head>
 <body>
@@ -137,20 +143,35 @@
     <button class="btn-primary" onclick="generateReply()">Generate Reply</button>
 
     <div id="outputContainer" style="margin-top: 22px; display: none;">
-        <div class="option-header">
-            <div class="option-label">Hasil Rekomendasi</div>
-            <div class="style-badge" id="styleBadge">Gaya Jujur & Worth It</div>
-        </div>
         
+        <!-- OPSI 1: Kalimat Review + Nama Produk -->
         <div class="option-card">
+            <div class="option-header">
+                <div class="option-label">Opsi 1: Review + Nama Produk</div>
+                <div class="style-badge" id="styleBadge">Gaya Jujur & Worth It</div>
+            </div>
             <div class="option-text" id="singleOutput"></div>
-            <button class="btn-copy" onclick="copyOption('singleOutput', this)">Salin Balasan</button>
+            <button class="btn-copy" id="btnCopy1" onclick="copyOption('singleOutput', this)">Salin Opsi 1</button>
         </div>
-        <div class="hint" style="text-align: center; margin-top: 10px;">Kurang cocok? Tekan tombol <b>Generate Reply</b> lagi untuk mengacak kalimat review lainnya!</div>
+
+        <!-- OPSI 2: Kalimat Singkat Warga X (Database Baru) -->
+        <div class="option-card">
+            <div class="option-header">
+                <div class="option-label">Opsi 2: Gaya Singkat Warga X</div>
+                <div class="style-badge alt">Populer di Base/Menfess</div>
+            </div>
+            <div class="option-text" id="shortOutput"></div>
+            <div class="action-row">
+                <button class="btn-shuffle" onclick="shuffleShortReply()" title="Ganti kalimat singkat">Acak Lagi</button>
+                <button class="btn-copy" id="btnCopy2" onclick="copyOption('shortOutput', this)">Salin Opsi 2</button>
+            </div>
+        </div>
+
+        <div class="hint" style="text-align: center; margin-top: 6px;">Tekan <b>Generate Reply</b> untuk mengacak semua opsi, atau klik <b>Acak Lagi</b> untuk mengganti Opsi 2 saja.</div>
     </div>
 
     <script>
-        // Kategori 1: Gaya Jujur & Worth It (Kesan review jujur & meyakinkan, ~10-15 kata)
+        // Kategori 1: Gaya Jujur & Worth It (~10-15 kata)
         const templatesWorthIt = [
             "Kak, {product} ini asli worth it banget dan awet dipakai, coba cek di sini ya",
             "Halo kak, jujur {product} ini kualitasnya gak kaleng-kaleng buat harian, langsung cek di sini",
@@ -159,7 +180,7 @@
             "Halo kak, {product} ini kualitasnya oke banget dan gak bikin nyesel, coba cek ke sini"
         ];
 
-        // Kategori 2: Gaya Rating & Terlaris (Fokus social proof / ulasan toko, ~10-15 kata)
+        // Kategori 2: Gaya Rating & Terlaris (~10-15 kata)
         const templatesRating = [
             "Kak, izin spill {product} yang ulasannya bagus semua dan laris, cek di sini ya",
             "Halo kak, {product} di toko ini ratingnya tinggi dan gak mengecewakan, langsung cek aja",
@@ -168,7 +189,7 @@
             "Halo kak, {product} ini review pembelinya bagus banget dan stoknya aman, silakan cek di sini"
         ];
 
-        // Kategori 3: Gaya Racun Anak X (Bikin penasaran / FOMO santai, ~10-15 kata)
+        // Kategori 3: Gaya Racun Anak X (~10-15 kata)
         const templatesRacun = [
             "Kak, {product} ini cakep banget aslinya dan lagi banyak yang incar, langsung cek ke sini",
             "Halo kak, {product} ini beneran sebagus itu pas dipakai dan gak pasaran, coba intip ya",
@@ -177,14 +198,32 @@
             "Halo kak, buat {product} yang lagi banyak dicari ini stoknya masih aman, langsung cek aja"
         ];
 
-        let lastTemplate = '';
+        // Database Baru: Gaya Singkat Warga X (Sering dipakai di X / Menfess)
+        const templatesShortX = [
+            "kayak gini kah kak?",
+            "itu kak modelnya lucuu dan cakep 😍😍",
+            "bisa ambil ini kak, favorit akuu",
+            "kaaa izin spill yaa",
+            "mjb kak, coba cek ini 🤗🫶🏻",
+            "ini coba kepoin seng"
+        ];
 
-        function getRandomTemplate(arr) {
+        let lastTemplate = '';
+        let lastShortTemplate = '';
+        let currentLink = 'https://s.shopee.co.id/xxxx';
+
+        function getRandomTemplate(arr, isShort = false) {
             let pick;
+            const last = isShort ? lastShortTemplate : lastTemplate;
             do {
                 pick = arr[Math.floor(Math.random() * arr.length)];
-            } while (pick === lastTemplate && arr.length > 1);
-            lastTemplate = pick;
+            } while (pick === last && arr.length > 1);
+            
+            if (isShort) {
+                lastShortTemplate = pick;
+            } else {
+                lastTemplate = pick;
+            }
             return pick;
         }
 
@@ -220,7 +259,6 @@
                 words = words.slice(1);
             }
             
-            // Mengambil maksimal 5 kata agar total keseluruhan kalimat tetap pas di kisaran 10-15 kata
             const productName = words.slice(0, 5).join(' ') || 'produk pilihan';
 
             return { link, productName };
@@ -234,6 +272,9 @@
             }
 
             const info = extractProductInfo(input);
+            currentLink = info.link;
+
+            // Generate Opsi 1 (Review + Nama Produk)
             const style = Math.floor(Math.random() * 3) + 1;
             let sentence = '';
             let styleName = '';
@@ -249,28 +290,46 @@
                 sentence = getRandomTemplate(templatesRacun).replace('{product}', info.productName);
             }
 
-            // Link ditaruh 1 baris di bawah kalimat tanpa emotikon dan tanpa harga
-            const resultText = `${sentence}\n${info.link}`;
-
-            document.getElementById('singleOutput').textContent = resultText;
+            const resultText1 = `${sentence}\n${info.link}`;
+            document.getElementById('singleOutput').textContent = resultText1;
             document.getElementById('styleBadge').textContent = styleName;
-            document.getElementById('outputContainer').style.display = 'block';
 
-            const btn = document.querySelector('.btn-copy');
-            btn.textContent = 'Salin Balasan';
-            btn.classList.remove('copied');
+            // Generate Opsi 2 (Gaya Singkat Warga X)
+            const shortSentence = getRandomTemplate(templatesShortX, true);
+            const resultText2 = `${shortSentence}\n${info.link}`;
+            document.getElementById('shortOutput').textContent = resultText2;
+
+            // Tampilkan hasil & reset tombol salin
+            document.getElementById('outputContainer').style.display = 'block';
+            resetCopyButton('btnCopy1', 'Salin Opsi 1');
+            resetCopyButton('btnCopy2', 'Salin Opsi 2');
 
             document.getElementById('outputContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
+        function shuffleShortReply() {
+            const shortSentence = getRandomTemplate(templatesShortX, true);
+            document.getElementById('shortOutput').textContent = `${shortSentence}\n${currentLink}`;
+            resetCopyButton('btnCopy2', 'Salin Opsi 2');
+        }
+
+        function resetCopyButton(btnId, defaultText) {
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                btn.textContent = defaultText;
+                btn.classList.remove('copied');
+            }
+        }
+
         async function copyOption(elementId, btnElement) {
             const text = document.getElementById(elementId).textContent;
+            const originalText = btnElement.id === 'btnCopy1' ? 'Salin Opsi 1' : 'Salin Opsi 2';
             try {
                 await navigator.clipboard.writeText(text);
                 btnElement.textContent = 'Berhasil Disalin!';
                 btnElement.classList.add('copied');
                 setTimeout(() => {
-                    btnElement.textContent = 'Salin Balasan';
+                    btnElement.textContent = originalText;
                     btnElement.classList.remove('copied');
                 }, 1500);
             } catch (err) {
@@ -284,7 +343,7 @@
                 btnElement.textContent = 'Berhasil Disalin!';
                 btnElement.classList.add('copied');
                 setTimeout(() => {
-                    btnElement.textContent = 'Salin Balasan';
+                    btnElement.textContent = originalText;
                     btnElement.classList.remove('copied');
                 }, 1500);
             }
