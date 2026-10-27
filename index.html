@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Reply X</title>
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-title" content="Reply X">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Favicon Inline Logo X -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23000000'/><path d='M68.2 22h11.5L54.6 50.7 84.1 89.7H61L42.9 66.1 22.2 89.7H10.7l26.9-30.7L9.3 22h23.7l16.3 21.6L68.2 22zm-4 60.9h6.4L29.3 28.5h-6.8l41.7 54.4z' fill='white'/></svg>">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <link rel="manifest" href="manifest.json">
+    <style>
+        :root {
+            --primary: #0f1419;
+            --primary-dark: #272c30;
+            --accent: #1d9bf0;
+            --bg: #f7f9f9;
+            --card: #ffffff;
+            --text: #0f1419;
+            --text-secondary: #536471;
+            --border: #cfd9de;
+            --danger: #f4212e;
+            --success: #00ba7c;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .header { 
+            text-align: center; 
+            margin-bottom: 20px; 
+            padding: 12px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .logo-x {
+            width: 32px;
+            height: 32px;
+            background: #000000;
+            color: #ffffff;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 20px;
+        }
+        .header h1 { color: var(--primary); font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid #eff3f4;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            margin-bottom: 16px;
+        }
+        label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 8px; color: var(--text); }
+        textarea {
+            width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 12px;
+            font-size: 15px; font-family: inherit; resize: vertical; min-height: 100px; 
+            transition: border-color 0.2s, box-shadow 0.2s;
+            color: var(--text);
+        }
+        textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(15, 20, 25, 0.1); }
+        .button-group { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+        button {
+            flex: 1; padding: 10px 16px; border: none; border-radius: 9999px; font-size: 14px;
+            font-weight: 700; cursor: pointer; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        button:active { transform: scale(0.97); }
+        .btn-secondary { background-color: #eff3f4; color: var(--text); }
+        .btn-secondary:hover { background-color: #d7dbdc; }
+        .btn-danger { background-color: #fee7e9; color: var(--danger); }
+        .btn-danger:hover { background-color: #fdd2d5; }
+        .btn-primary { 
+            background-color: var(--primary); color: white; width: 100%; 
+            padding: 14px; font-size: 16px; font-weight: 700; margin-top: 8px;
+            box-shadow: 0 4px 10px rgba(15, 20, 25, 0.2);
+        }
+        .btn-primary:hover { background-color: var(--primary-dark); }
+        .hint { font-size: 12px; color: var(--text-secondary); margin-top: 10px; line-height: 1.4; }
+        
+        .option-card {
+            background: #ffffff; border: 1px solid var(--border); border-radius: 16px;
+            padding: 16px; margin-bottom: 12px; position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .option-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+        }
+        .option-label { font-size: 16px; font-weight: 800; color: var(--text); }
+        .style-badge {
+            font-size: 12px; font-weight: 700; color: #ffffff;
+            background: var(--primary); padding: 4px 12px; border-radius: 9999px;
+        }
+        .option-text {
+            font-size: 15px; line-height: 1.5; color: var(--text);
+            white-space: pre-wrap; margin-bottom: 14px; word-break: break-word;
+            background: #f7f9f9; padding: 14px; border-radius: 12px; border: 1px solid #eff3f4;
+        }
+        .btn-copy { background-color: var(--accent); color: white; width: 100%; padding: 12px; font-size: 14px; font-weight: 700; }
+        .btn-copy:hover { background-color: #1a8cd8; }
+        .btn-copy.copied { background-color: var(--success); }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo-x">𝕏</div>
+        <h1>Reply X</h1>
+    </div>
+
+    <div class="card">
+        <label for="inputText">Informasi Produk Shopee</label>
+        <textarea id="inputText" placeholder="Tempel teks share produk dari Shopee di sini.."></textarea>
+        
+        <div class="button-group">
+            <button class="btn-secondary" onclick="pasteText()">Tempel</button>
+            <button class="btn-danger" onclick="clearText()">Hapus</button>
+        </div>
+        <div class="hint">Tips: Tekan lama di area teks lalu pilih "Tempel" jika tombol otomatis tidak merespons.</div>
+    </div>
+
+    <button class="btn-primary" onclick="generateReply()">Generate Reply</button>
+
+    <div id="outputContainer" style="margin-top: 22px; display: none;">
+        <div class="option-header">
+            <div class="option-label">Hasil Rekomendasi</div>
+            <div class="style-badge" id="styleBadge">Gaya Jujur & Worth It</div>
+        </div>
+        
+        <div class="option-card">
+            <div class="option-text" id="singleOutput"></div>
+            <button class="btn-copy" onclick="copyOption('singleOutput', this)">Salin Balasan</button>
+        </div>
+        <div class="hint" style="text-align: center; margin-top: 10px;">Kurang cocok? Tekan tombol <b>Generate Reply</b> lagi untuk mengacak kalimat review lainnya!</div>
+    </div>
+
+    <script>
+        // Kategori 1: Gaya Jujur & Worth It (Kesan review jujur & meyakinkan, ~10-15 kata)
+        const templatesWorthIt = [
+            "Kak, {product} ini asli worth it banget dan awet dipakai, coba cek di sini ya",
+            "Halo kak, jujur {product} ini kualitasnya gak kaleng-kaleng buat harian, langsung cek di sini",
+            "Hai kak, buat {product} ini bahannya bagus dan rapi banget, langsung intip ke sini aja",
+            "Kak, {product} ini beneran bagus dan kepakai banget buat sehari-hari, cek detailnya di sini ya",
+            "Halo kak, {product} ini kualitasnya oke banget dan gak bikin nyesel, coba cek ke sini"
+        ];
+
+        // Kategori 2: Gaya Rating & Terlaris (Fokus social proof / ulasan toko, ~10-15 kata)
+        const templatesRating = [
+            "Kak, izin spill {product} yang ulasannya bagus semua dan laris, cek di sini ya",
+            "Halo kak, {product} di toko ini ratingnya tinggi dan gak mengecewakan, langsung cek aja",
+            "Hai kak, buat {product} ini udah banyak yang buktikan bagus di review, coba intip ya",
+            "Kak, {product} ini udah terjual banyak dengan testi yang positif semua, langsung meluncur ke sini",
+            "Halo kak, {product} ini review pembelinya bagus banget dan stoknya aman, silakan cek di sini"
+        ];
+
+        // Kategori 3: Gaya Racun Anak X (Bikin penasaran / FOMO santai, ~10-15 kata)
+        const templatesRacun = [
+            "Kak, {product} ini cakep banget aslinya dan lagi banyak yang incar, langsung cek ke sini",
+            "Halo kak, {product} ini beneran sebagus itu pas dipakai dan gak pasaran, coba intip ya",
+            "Hai kak, mumpung {product} yang lagi rame dicari ini masih ada, langsung cek ke sini",
+            "Kak, {product} ini racun banget karena aslinya emang secakep itu, coba intip detailnya di sini",
+            "Halo kak, buat {product} yang lagi banyak dicari ini stoknya masih aman, langsung cek aja"
+        ];
+
+        let lastTemplate = '';
+
+        function getRandomTemplate(arr) {
+            let pick;
+            do {
+                pick = arr[Math.floor(Math.random() * arr.length)];
+            } while (pick === lastTemplate && arr.length > 1);
+            lastTemplate = pick;
+            return pick;
+        }
+
+        async function pasteText() {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById('inputText').value = text;
+            } catch (err) {
+                alert('Gagal menempel otomatis. Silakan tekan lama di kolom teks lalu pilih Tempel.');
+            }
+        }
+
+        function clearText() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('outputContainer').style.display = 'none';
+        }
+
+        function extractProductInfo(input) {
+            const linkMatch = input.match(/https?:\/\/[^\s]+/);
+            const link = linkMatch ? linkMatch[0] : 'https://s.shopee.co.id/xxxx';
+
+            let cleanText = input
+                .replace(/\[.*?\]/g, '')       
+                .replace(/\(.*?\)/g, '')       
+                .replace(/https?:\/\/[^\s]+/g, '') 
+                .replace(/dengan harga.*/i, '')    
+                .replace(/Dapatkan di Shopee sekarang!/i, '') 
+                .trim();
+
+            let words = cleanText.split(/\s+/).filter(w => w.length > 0);
+            
+            if (words.length > 0 && (words[0].toLowerCase() === 'cek' || words[0].toLowerCase() === 'jual')) {
+                words = words.slice(1);
+            }
+            
+            // Mengambil maksimal 5 kata agar total keseluruhan kalimat tetap pas di kisaran 10-15 kata
+            const productName = words.slice(0, 5).join(' ') || 'produk pilihan';
+
+            return { link, productName };
+        }
+
+        function generateReply() {
+            const input = document.getElementById('inputText').value;
+            if (!input.trim()) {
+                alert('Silakan tempel atau ketik informasi produk terlebih dahulu!');
+                return;
+            }
+
+            const info = extractProductInfo(input);
+            const style = Math.floor(Math.random() * 3) + 1;
+            let sentence = '';
+            let styleName = '';
+
+            if (style === 1) {
+                styleName = 'Gaya Jujur & Worth It';
+                sentence = getRandomTemplate(templatesWorthIt).replace('{product}', info.productName);
+            } else if (style === 2) {
+                styleName = 'Gaya Rating & Terlaris';
+                sentence = getRandomTemplate(templatesRating).replace('{product}', info.productName);
+            } else {
+                styleName = 'Gaya Racun Anak X';
+                sentence = getRandomTemplate(templatesRacun).replace('{product}', info.productName);
+            }
+
+            // Link ditaruh 1 baris di bawah kalimat tanpa emotikon dan tanpa harga
+            const resultText = `${sentence}\n${info.link}`;
+
+            document.getElementById('singleOutput').textContent = resultText;
+            document.getElementById('styleBadge').textContent = styleName;
+            document.getElementById('outputContainer').style.display = 'block';
+
+            const btn = document.querySelector('.btn-copy');
+            btn.textContent = 'Salin Balasan';
+            btn.classList.remove('copied');
+
+            document.getElementById('outputContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        async function copyOption(elementId, btnElement) {
+            const text = document.getElementById(elementId).textContent;
+            try {
+                await navigator.clipboard.writeText(text);
+                btnElement.textContent = 'Berhasil Disalin!';
+                btnElement.classList.add('copied');
+                setTimeout(() => {
+                    btnElement.textContent = 'Salin Balasan';
+                    btnElement.classList.remove('copied');
+                }, 1500);
+            } catch (err) {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                
+                btnElement.textContent = 'Berhasil Disalin!';
+                btnElement.classList.add('copied');
+                setTimeout(() => {
+                    btnElement.textContent = 'Salin Balasan';
+                    btnElement.classList.remove('copied');
+                }, 1500);
+            }
+        }
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW registered:', reg))
+                    .catch(err => console.log('SW registration failed:', err));
+            });
+        }
+    </script>
+</body>
+</html>
