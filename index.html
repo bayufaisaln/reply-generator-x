@@ -171,41 +171,89 @@
     </div>
 
     <script>
-        // Kategori 1: Gaya Jujur & Worth It (~10-15 kata)
+        // Kategori 1: Gaya Jujur & Worth It (pembuka bervariasi)
         const templatesWorthIt = [
             "Kak, {product} ini asli worth it banget dan awet dipakai, coba cek di sini ya",
-            "Halo kak, jujur {product} ini kualitasnya gak kaleng-kaleng buat harian, langsung cek di sini",
-            "Hai kak, buat {product} ini bahannya bagus dan rapi banget, langsung intip ke sini aja",
-            "Kak, {product} ini beneran bagus dan kepakai banget buat sehari-hari, cek detailnya di sini ya",
-            "Halo kak, {product} ini kualitasnya oke banget dan gak bikin nyesel, coba cek ke sini"
+            "Jujur ya kak, {product} ini kualitasnya gak kaleng-kaleng buat harian, langsung cek di sini",
+            "Izin rekomen kak, {product} ini bahannya bagus dan rapi banget, intip ke sini aja",
+            "Eh kak, {product} ini beneran kepakai banget buat sehari-hari, cek detailnya di sini ya",
+            "Permisi kak, {product} ini kualitasnya oke dan gak bikin nyesel, coba cek ke sini",
+            "Spill dikit ya kak, {product} ini awet dan nyaman dipakai, ini linknya",
+            "Aku pribadi suka banget sama {product} ini, bahannya enak dan harganya masuk akal, cek di sini",
+            "Misi kak, buat yang lagi cari {product}, yang ini bagus banget kok, silakan intip",
+            "Btw kak, {product} ini worth it parah buat harga segitu, coba cek di sini",
+            "Kakak, {product} ini jahitannya rapi dan kualitasnya terasa banget, cek ya di sini",
+            "Menurut aku sih {product} ini salah satu yang paling pas buat harian, langsung cek aja",
+            "Rekomen banget nih kak, {product} ini gak nyesel beli, detailnya ada di sini",
+            "{product} ini bagus banget kak, awet dan kepakai terus, coba cek di sini ya"
         ];
 
-        // Kategori 2: Gaya Rating & Terlaris (~10-15 kata)
+        // Kategori 2: Gaya Rating & Terlaris
         const templatesRating = [
             "Kak, izin spill {product} yang ulasannya bagus semua dan laris, cek di sini ya",
-            "Halo kak, {product} di toko ini ratingnya tinggi dan gak mengecewakan, langsung cek aja",
-            "Hai kak, buat {product} ini udah banyak yang buktikan bagus di review, coba intip ya",
-            "Kak, {product} ini udah terjual banyak dengan testi yang positif semua, langsung meluncur ke sini",
-            "Halo kak, {product} ini review pembelinya bagus banget dan stoknya aman, silakan cek di sini"
+            "Cek deh kak, {product} di toko ini ratingnya tinggi dan gak mengecewakan",
+            "Udah banyak yang buktikan kak, {product} ini bagus di review, coba intip ya",
+            "Kak, {product} ini udah terjual banyak dengan testi positif semua, meluncur ke sini",
+            "Misi kak, {product} ini review pembelinya bagus banget dan stoknya aman, silakan cek",
+            "Ulasannya penuh bintang lima kak, {product} ini emang sebagus itu, cek di sini",
+            "Terlaris nih kak, {product} ini banyak yang repeat order, intip di sini ya",
+            "Izin share kak, {product} ini rating tokonya tinggi dan fotonya sesuai aslinya, cek ya",
+            "Btw kak, {product} ini testinya bagus-bagus banget, bisa dibaca sendiri di sini",
+            "Buat yang masih ragu kak, review {product} ini meyakinkan banget, coba lihat di sini",
+            "Kak, banyak pembeli puas sama {product} ini, penjualnya juga fast respon, cek di sini",
+            "{product} ini lagi laris kak dan ulasannya positif, link-nya di sini ya",
+            "Pantengin ini kak, {product} dengan rating tinggi dan stok masih ready, cek aja"
         ];
 
-        // Kategori 3: Gaya Racun Anak X (~10-15 kata)
+        // Kategori 3: Gaya Racun Anak X
         const templatesRacun = [
             "Kak, {product} ini cakep banget aslinya dan lagi banyak yang incar, langsung cek ke sini",
-            "Halo kak, {product} ini beneran sebagus itu pas dipakai dan gak pasaran, coba intip ya",
-            "Hai kak, mumpung {product} yang lagi rame dicari ini masih ada, langsung cek ke sini",
-            "Kak, {product} ini racun banget karena aslinya emang secakep itu, coba intip detailnya di sini",
-            "Halo kak, buat {product} yang lagi banyak dicari ini stoknya masih aman, langsung cek aja"
+            "Awas kepincut kak, {product} ini beneran sebagus itu pas dipakai, coba intip ya",
+            "Mumpung masih ada kak, {product} yang lagi rame dicari ini, cek ke sini",
+            "Hati-hati racun kak, {product} ini aslinya emang secakep itu, intip detailnya di sini",
+            "Eh kak, {product} yang lagi banyak dicari ini stoknya masih aman, langsung cek aja",
+            "Siap-siap checkout kak, {product} ini cakep parah dan gak pasaran, ini linknya",
+            "Gemes banget kak sama {product} ini, aslinya lebih bagus dari fotonya, cek di sini",
+            "Kaaak, {product} ini lagi hits banget, jangan sampai kehabisan ya, cek di sini",
+            "Spill racun hari ini kak, {product} yang bikin susah nahan checkout, intip sini",
+            "Lucu banget kak {product} ini, pantes banyak yang cari, coba lihat di sini",
+            "Fix masuk keranjang kak, {product} ini cakep dan gak pasaran, cek link-nya",
+            "Tuh kan kak, {product} ini emang racun, aslinya cakep banget, kepoin di sini",
+            "Yang lagi cari {product} wajib lihat ini kak, cakep dan lagi diincar banyak orang"
         ];
 
-        // Database Baru: Gaya Singkat Warga X (Sering dipakai di X / Menfess)
+        // Gaya Singkat Warga X (Sering dipakai di X / Menfess)
         const templatesShortX = [
             "kayak gini kah kak?",
             "itu kak modelnya lucuu dan cakep 😍😍",
             "bisa ambil ini kak, favorit akuu",
             "kaaa izin spill yaa",
             "mjb kak, coba cek ini 🤗🫶🏻",
-            "ini coba kepoin seng"
+            "ini coba kepoin seng",
+            "mungkin yang ini kak? 🤍",
+            "izin rekomen yang ini yaa kak 🙏🏻",
+            "ini bukan sih kak yang dicari? 👀",
+            "coba deh kak yang ini, aku juga suka 🥹",
+            "mampir kak, ini lucu bangett 😭🫶🏻",
+            "kak ini mirip banget, cek yaa 🤭",
+            "minta tolong dicek kak, siapa tau cocok 🤍",
+            "yang ini ready kak, aman 🫶🏻",
+            "ini kak yang aku pakai, nyaman bangett ✨",
+            "boleh intip yang ini kak, cakep banget 😍",
+            "spill dikit yaa kak, ini linknya 🥰",
+            "ada nih kak, coba lihat dulu 🤗",
+            "cek ini dong kak, gak nyesel deh 🥺🤍",
+            "semoga cocok yaa kak, ini linknya 🫶🏻",
+            "sini kak aku bantu cariin, coba yang ini 🔍",
+            "wahh ini sih cakep parah kak, intip dulu 😍😍",
+            "kak coba ini deh, worth it banget 💯",
+            "ini lagi viral kak, banyak yang cari 🔥",
+            "coba cek ini yaa kak, siapa tau suka 🤍",
+            "izin nyaranin ini yaa kak 🙏🏻✨",
+            "nah ini kak, kayaknya yang kamu cari 🥰",
+            "gasss kak, ini bagus bangett 😭",
+            "ini racun banget sih kak, awas khilaf 🤭",
+            "cek yang ini kak, favorit aku sejauh ini 🤍"
         ];
 
         let lastTemplate = '';

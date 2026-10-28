@@ -1,5 +1,5 @@
 // Service worker Reply X: online dulu, cadangan dari cache saat offline
-const CACHE = 'reply-x-v2';
+const CACHE = 'reply-x-v3';
 const FILES = [
   './',
   './index.html',
