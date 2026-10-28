@@ -144,30 +144,33 @@
 
     <div id="outputContainer" style="margin-top: 22px; display: none;">
         
-        <!-- OPSI 1: Kalimat Review + Nama Produk -->
+        <!-- POPULER: Kalimat Singkat Warga X -->
         <div class="option-card">
             <div class="option-header">
-                <div class="option-label">Opsi 1: Review + Nama Produk</div>
-                <div class="style-badge" id="styleBadge">Gaya Jujur & Worth It</div>
-            </div>
-            <div class="option-text" id="singleOutput"></div>
-            <button class="btn-copy" id="btnCopy1" onclick="copyOption('singleOutput', this)">Salin Opsi 1</button>
-        </div>
-
-        <!-- OPSI 2: Kalimat Singkat Warga X (Database Baru) -->
-        <div class="option-card">
-            <div class="option-header">
-                <div class="option-label">Opsi 2: Gaya Singkat Warga X</div>
-                <div class="style-badge alt">Populer di Base/Menfess</div>
+                <div class="option-label">Populer</div>
+                <div class="style-badge alt">Singkat ala Warga X</div>
             </div>
             <div class="option-text" id="shortOutput"></div>
             <div class="action-row">
                 <button class="btn-shuffle" onclick="shuffleShortReply()" title="Ganti kalimat singkat">Acak Lagi</button>
-                <button class="btn-copy" id="btnCopy2" onclick="copyOption('shortOutput', this)">Salin Opsi 2</button>
+                <button class="btn-copy" id="btnCopyPopuler" onclick="copyOption('shortOutput', this)">Salin Populer</button>
             </div>
         </div>
 
-        <div class="hint" style="text-align: center; margin-top: 6px;">Tekan <b>Generate Reply</b> untuk mengacak semua opsi, atau klik <b>Acak Lagi</b> untuk mengganti Opsi 2 saja.</div>
+        <!-- GAYA JUJUR: Kalimat Review + Nama Produk -->
+        <div class="option-card">
+            <div class="option-header">
+                <div class="option-label">Gaya Jujur</div>
+                <div class="style-badge" id="styleBadge">Worth It</div>
+            </div>
+            <div class="option-text" id="singleOutput"></div>
+            <div class="action-row">
+                <button class="btn-shuffle" onclick="shuffleJujurReply()" title="Ganti kalimat review">Acak Lagi</button>
+                <button class="btn-copy" id="btnCopyJujur" onclick="copyOption('singleOutput', this)">Salin Gaya Jujur</button>
+            </div>
+        </div>
+
+        <div class="hint" style="text-align: center; margin-top: 6px;">Tekan <b>Generate Reply</b> untuk mengacak keduanya, atau klik <b>Acak Lagi</b> pada kartu untuk mengganti salah satunya saja.</div>
     </div>
 
     <script>
@@ -312,6 +315,34 @@
             return { link, productName };
         }
 
+        let currentProduct = 'produk pilihan';
+
+        function buildJujurReply() {
+            const style = Math.floor(Math.random() * 3) + 1;
+            let sentence = '';
+            let styleName = '';
+
+            if (style === 1) {
+                styleName = 'Worth It';
+                sentence = getRandomTemplate(templatesWorthIt);
+            } else if (style === 2) {
+                styleName = 'Rating & Terlaris';
+                sentence = getRandomTemplate(templatesRating);
+            } else {
+                styleName = 'Racun Anak X';
+                sentence = getRandomTemplate(templatesRacun);
+            }
+
+            sentence = sentence.replace('{product}', currentProduct);
+            document.getElementById('singleOutput').textContent = `${sentence}\n${currentLink}`;
+            document.getElementById('styleBadge').textContent = styleName;
+        }
+
+        function buildPopulerReply() {
+            const shortSentence = getRandomTemplate(templatesShortX, true);
+            document.getElementById('shortOutput').textContent = `${shortSentence}\n${currentLink}`;
+        }
+
         function generateReply() {
             const input = document.getElementById('inputText').value;
             if (!input.trim()) {
@@ -321,44 +352,27 @@
 
             const info = extractProductInfo(input);
             currentLink = info.link;
+            currentProduct = info.productName;
 
-            // Generate Opsi 1 (Review + Nama Produk)
-            const style = Math.floor(Math.random() * 3) + 1;
-            let sentence = '';
-            let styleName = '';
-
-            if (style === 1) {
-                styleName = 'Gaya Jujur & Worth It';
-                sentence = getRandomTemplate(templatesWorthIt).replace('{product}', info.productName);
-            } else if (style === 2) {
-                styleName = 'Gaya Rating & Terlaris';
-                sentence = getRandomTemplate(templatesRating).replace('{product}', info.productName);
-            } else {
-                styleName = 'Gaya Racun Anak X';
-                sentence = getRandomTemplate(templatesRacun).replace('{product}', info.productName);
-            }
-
-            const resultText1 = `${sentence}\n${info.link}`;
-            document.getElementById('singleOutput').textContent = resultText1;
-            document.getElementById('styleBadge').textContent = styleName;
-
-            // Generate Opsi 2 (Gaya Singkat Warga X)
-            const shortSentence = getRandomTemplate(templatesShortX, true);
-            const resultText2 = `${shortSentence}\n${info.link}`;
-            document.getElementById('shortOutput').textContent = resultText2;
+            buildPopulerReply();
+            buildJujurReply();
 
             // Tampilkan hasil & reset tombol salin
             document.getElementById('outputContainer').style.display = 'block';
-            resetCopyButton('btnCopy1', 'Salin Opsi 1');
-            resetCopyButton('btnCopy2', 'Salin Opsi 2');
+            resetCopyButton('btnCopyPopuler', 'Salin Populer');
+            resetCopyButton('btnCopyJujur', 'Salin Gaya Jujur');
 
             document.getElementById('outputContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function shuffleShortReply() {
-            const shortSentence = getRandomTemplate(templatesShortX, true);
-            document.getElementById('shortOutput').textContent = `${shortSentence}\n${currentLink}`;
-            resetCopyButton('btnCopy2', 'Salin Opsi 2');
+            buildPopulerReply();
+            resetCopyButton('btnCopyPopuler', 'Salin Populer');
+        }
+
+        function shuffleJujurReply() {
+            buildJujurReply();
+            resetCopyButton('btnCopyJujur', 'Salin Gaya Jujur');
         }
 
         function resetCopyButton(btnId, defaultText) {
@@ -371,7 +385,7 @@
 
         async function copyOption(elementId, btnElement) {
             const text = document.getElementById(elementId).textContent;
-            const originalText = btnElement.id === 'btnCopy1' ? 'Salin Opsi 1' : 'Salin Opsi 2';
+            const originalText = btnElement.id === 'btnCopyJujur' ? 'Salin Gaya Jujur' : 'Salin Populer';
             try {
                 await navigator.clipboard.writeText(text);
                 btnElement.textContent = 'Berhasil Disalin!';
